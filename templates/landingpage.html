@@ -5,7 +5,16 @@ Inspire: Landing Page
 {% endblock %}
 
 {% block main %}
-<img id="LandingImage" src="/static/Inspire_land1.jpeg" alt="Person with a library in background" class="img-fluid" style="width: 100%; max-width: 800px; height: auto; border-radius: 20px;">
+<div style="position: relative; width: 100%; max-width: 800px; margin: auto;">
+    <img id="LandingImage" src="/static/Inspire_land1.jpeg" alt="Person with a library in background"
+        class="img-fluid" style="width: 100%; height: auto; border-radius: 20px;">
+
+    <a href="{{ url_for('login')}}" class="btn btn-primary round"
+        style="position: absolute; top: 70%; left: 50%; transform: translate(-50%, -50%);
+               padding: 20px 30px; font-size: 1.2rem; background-color: #007BFF; border: none;">
+        Get Started
+    </a>
+</div>
 
 <script>
     const images = ["/static/Inspire_land1.jpeg", "/static/inspire_landing3.jpeg"];
