@@ -27,6 +27,7 @@ drf-nested-routers==0.94.1
 Flask==3.1.0
 Flask-Session==0.8.0
 greenlet==3.1.1
+gunicorn==23.0.0
 idna==3.10
 itsdangerous==2.2.0
 Jinja2==3.1.6
