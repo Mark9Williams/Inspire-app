@@ -114,7 +114,7 @@ pip freeze > requirements.txt
 
 ## 🚀 Deployment
 
-The application is deployed on **Render.com**, and can be accessed live here: [🌐 Live Demo of Inspire](https://inspire-app-cznh.onrender.com/), allowing users to interact with Inspire from anywhere with an internet connection. The deployment includes the Flask backend, templates, and static content. Render ensures automatic redeployment upon each GitHub push.
+The application is deployed on **Render.com**, and can be accessed live here: [Live Demo of Inspire](https://inspire-app-cznh.onrender.com/), allowing users to interact with Inspire from anywhere with an internet connection. The deployment includes the Flask backend, templates, and static content. Render ensures automatic redeployment upon each GitHub push.
 
 
 ---
