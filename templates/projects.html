@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Portfolio
+{% endblock %}
+
+{% block main %}
+<style>
+    body {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: #fff; /* Ensures text remains readable */
+        min-height: 100vh; /* Ensures full height coverage */
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        color: #fff;
+    }
+
+    .btn-primary {
+        background-color: #ff6f61;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #ff3b2f;
+    }
+
+    a {
+        color: #ffdf7e;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+<div class="card h-800 text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="true" href="#">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+    </div>
+    <div class="card text-bg-info mx-auto mt-4" style="width: 25rem;">
+        <img src="/static/markpic.jpg" class="card-img-top" alt="Profile Picture">
+        <div class="card-body">
+          <h5 class="card-title">{{person.query}}'s Inspiration</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="{{url_for('user_profile', user_id=person.user[0].id)}}" class="btn btn-primary">Profile</a>
+        </div>
+      </div>
+  </div>
+{% endblock %}

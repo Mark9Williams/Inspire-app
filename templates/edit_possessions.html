@@ -1,0 +1,88 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Edit Possessions
+{% endblock %}
+
+{% block main %}
+<div class="card mt-4 shadow" style="background-color: #343a40; color: #f7e4b5;">
+    <div class="card-body">
+        <h2 class="card-title mb-4">Possessions</h2>
+
+        {% if possessions %}
+            <div class="table-responsive mb-5">
+                <table class="table table-dark table-striped table-bordered">
+                    <thead class="table-light text-dark">
+                        <tr>
+                            <th>Item ID</th>
+                            <th>Item Name</th>
+                            <th>Category</th>
+                            <th>Value</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for possession in possessions %}
+                            <tr>
+                                <td>{{ possession.id }}</td>
+                                <td>{{ possession.item_name }}</td>
+                                <td>{{ possession.category }}</td>
+                                <td>{{ possession.value }}</td>
+                                <td>
+                                    <form method="POST" action="" onsubmit="return confirm('Delete this item?');">
+                                        <input type="hidden" name="possession_id" value="{{ possession.id }}">
+                                        <input type="hidden" name="action_type" value="delete">
+                                        <input type="hidden" name="user_id" value="{{ user_id }}">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-muted">No possessions available.</p>
+        {% endif %}
+
+        <!-- Update Form -->
+        <h3 class="mb-3">Update a Possession</h3>
+        <form method="POST" action="">
+            <div class="row g-3 mb-3">
+                <div class="col-md-2">
+                    <label for="possession_id" class="form-label">Item ID</label>
+                    <input type="number" name="possession_id" id="possession_id" class="form-control" placeholder="ID (for update only)">
+                </div>
+                <div class="col-md-2">
+                    <input type="hidden" name="user_id" id="user_id" class="form-control" value="{{ user_id }}">
+                </div>
+                <div class="col-md-5">
+                    <label for="item_name" class="form-label">Item Name</label>
+                    <input type="text" name="item_name" id="item_name" class="form-control" placeholder="New Item Name">
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <label for="category" class="form-label">Category</label>
+                    <input type="text" name="category" id="category" class="form-control" placeholder="Category">
+                </div>
+                <div class="col-md-4">
+                    <label for="value" class="form-label">Value</label>
+                    <input type="number" step="0.01" name="value" id="value" class="form-control" placeholder="Value">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="action_type" class="form-label">Choose Action</label>
+                <select name="action_type" id="action_type" class="form-select" required>
+                    <option value="insert">Insert New Possession</option>
+                    <option value="update">Update Existing Possession</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-warning mt-2">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

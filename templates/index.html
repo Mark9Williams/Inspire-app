@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+<ul class="list-group mt-2" id="suggestions"></ul>
+
+
+
+<img id="inspireImage" src="/static/dashboard1.jpeg" alt="Person with a library in background" class="img-fluid" style="width: 100%; max-width: 800px; height: auto ; border-radius: 20px;">
+
+<script>
+    const images = ["/static/dashboard1.jpeg", "/static/dashboard2.jpeg"];
+    let index = 0;
+
+    setInterval(() => {
+        index = (index + 1) % images.length;
+        document.getElementById("inspireImage").src = images[index];
+    }, 10000); // Change every 3 seconds
+
+    const input = document.querySelector('input[name="q"]');
+    const suggestions = document.getElementById("suggestions");
+
+    input.addEventListener('input', async function () {
+        if (input.value.trim() === "") {
+            suggestions.innerHTML = "";
+            return;
+        }
+
+        try {
+            const response = await fetch('/helper?q=' + encodeURIComponent(input.value));
+            const data = await response.text();
+            suggestions.innerHTML = data;
+        } catch (err) {
+            console.error("Autocomplete fetch error:", err);
+        }
+    });
+</script>
+
+{% endblock %}

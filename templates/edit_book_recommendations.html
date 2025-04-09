@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Edit Book Recommendations
+{% endblock %}
+
+{% block main %}
+<!-- Book Recommendations Tab -->
+<div class="tab-pane fade show active p-4 text-white" id="books-read" role="tabpanel" aria-labelledby="books-tab"
+     style="background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px;">
+
+    <div class="container">
+        <h2 class="text-center my-4">📚 Book Recommendations</h2>
+
+        {% if book_recommendations %}
+            <div class="table-responsive">
+                <table class="table table-dark table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Book Title</th>
+                            <th>Author</th>
+                            <th>Reason</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in book_recommendations %}
+                        <tr>
+                            <td>{{ book.id }}</td>
+                            <td>{{ book.book_title }}</td>
+                            <td>{{ book.author or "Unknown Author" }}</td>
+                            <td>{{ book.reason or "No reason provided." }}</td>
+                            <td>
+                                <form method="POST" action="" onsubmit="return confirm('Are you sure you want to delete this book?');">
+                                    <input type="hidden" name="book_id" value="{{ book.id }}">
+                                    <input type="hidden" name="action_type" value="delete">
+                                    <input type="hidden" name="user_id" value="{{ user_id }}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-warning text-center">No book recommendations available.</p>
+        {% endif %}
+
+        <!-- Add/Update Book Recommendation Form -->
+        <div class="card shadow-lg bg-dark text-white mt-4">
+            <div class="card-body">
+                <h5 class="card-title text-info">Update or Add Book Recommendations</h5>
+                <form method="POST" action="">
+                    <div class="col-md-3">
+                        <label for="action" class="form-label">Action</label>
+                        <select name="action_type" id="action_type" class="form-select" required>
+                            <option value="" disabled selected>Choose action</option>
+                            <option value="insert">Insert</option>
+                            <option value="update">Update</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="book_id" class="form-label">Book ID (Only for update)</label>
+                        <input type="number" name="book_id" id="book_id" class="form-control" placeholder="Book ID">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="book_title" class="form-label">Book Title</label>
+                        <input type="text" class="form-control" id="book_title" name="book_title" placeholder="Book Title">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Author</label>
+                        <input type="text" class="form-control" id="author" name="author" placeholder="Author">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="reason" class="form-label">Why do you recommend it?</label>
+                        <textarea class="form-control" id="reason" name="reason" rows="3" placeholder="Reason"></textarea>
+                    </div>
+                    <input type="hidden" name="user_id" value="{{ user_id }}">
+                    <button type="submit" class="btn btn-warning">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

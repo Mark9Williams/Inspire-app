@@ -1,0 +1,9 @@
+#suggestions {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    max-width: 400px;
+}
+.list-group-item {
+    cursor: pointer;
+}

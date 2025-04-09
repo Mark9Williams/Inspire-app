@@ -1,0 +1,274 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Portfolio
+{% endblock %}
+
+{% block main %}
+<div class="container my-5">
+  <div class="card shadow-lg text-white bg-dark">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs" id="portfolioTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button" role="tab">About</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="books-tab" data-bs-toggle="tab" data-bs-target="#books" type="button" role="tab">Books Read</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="projects-tab" data-bs-toggle="tab" data-bs-target="#projects" type="button" role="tab">Projects</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="possessions-tab" data-bs-toggle="tab" data-bs-target="#possessions" type="button" role="tab" aria-controls="possessions" aria-selected="false">Possessions</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="jobs-tab" data-bs-toggle="tab" data-bs-target="#jobs" type="button" role="tab" aria-controls="jobs" aria-selected="false">Jobs</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="networth-tab" data-bs-toggle="tab" data-bs-target="#networth" type="button" role="tab" aria-controls="networth" aria-selected="false">Net Worth</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="books-tab" data-bs-toggle="tab" data-bs-target="#books-read" type="button" role="tab" aria-controls="books" aria-selected="false">
+            Book Recommendations
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="hobbies-tab" data-bs-toggle="tab" data-bs-target="#hobbies" type="button" role="tab" aria-controls="hobbies" aria-selected="false">
+              Hobbies
+          </button>
+        </li>
+          
+      </ul>
+    </div>
+
+    <div class="tab-content p-4" id="portfolioTabContent">
+      <!-- About Tab -->
+      <div class="tab-pane fade show active" id="about" role="tabpanel">
+        <div class="card text-bg-info mx-auto" style="width: 25rem;">
+          <img src="/{{person.user[0].profile_image}}" class="card-img-top img-fluid rounded-circle border shadow-sm mb-3" alt="Profile Picture" style="width: 360px; height: 360px;">
+          <div class="card-body">
+            <h5 class="card-title">{{ person.query }}'s Inspiration</h5>
+            <p class="card-text">
+              {% if person.user %}
+                  {{ person.user[0].bio }}
+              {% else %}
+                  No bio available.
+              {% endif %}
+            </p>
+            <a href="{{ url_for('user_profile', user_id=person.user[0].id) }}" class="btn btn-primary">Profile</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Books Read Tab -->
+      <div class="tab-pane fade" id="books" role="tabpanel">
+        <h5 class="text-info">{{ person.query }}'s Books</h5>
+        <ul class="list-group list-group-flush text-start">
+          {% for book in person.books %}
+          <li class="list-group-item bg-dark text-white">
+            <strong>{{ book.title }}</strong> by {{ book.author }}
+          </li>
+          {% else %}
+          <li class="list-group-item bg-dark text-white">No books added yet.</li>
+          {% endfor %}
+        </ul>
+          {% if session["user_id"] == person.user[0].id %}
+              <a href="{{ url_for('books_catalog', user_id=person.user[0].id) }}" class="btn btn-primary">{% if person.books %} Edit {% else %} Add Books {% endif %}</a>
+          {% endif %}
+      </div>
+      <!-- Projects Tab -->
+      <div class="tab-pane fade p-4 text-white bg-gradient" id="projects" role="tabpanel" aria-labelledby="projects-tab"
+     style="background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px;">
+  {% if person.projects %}
+    <h3 class="mb-4 text-center">Projects</h3>
+    <div class="row">
+        {% for project in person.projects %}
+        <div class="col-md-6">
+            <div class="card mb-4 shadow">
+                <div class="card-body bg-dark text-light rounded">
+                    <h5 class="card-title text-info">{{ project.title }}</h5>
+                    <p class="card-text">{{ project.description[:200] }}...</p>
+                    
+                    {% if project.github_link %}
+                    <a href="{{ project.github_link }}" target="_blank" class="btn btn-outline-info btn-sm mb-2">
+                        View on GitHub
+                    </a>
+                    {% endif %}
+
+                    <p class="text-muted">
+                        <small><strong>Start Date:</strong> {{ project.start_date if project.start_date else 'N/A' }}</small><br>
+                        <small><strong>End Date:</strong> {{ project.end_date if project.end_date else 'Ongoing' }}</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-warning text-center">No projects available.</p>
+  {% endif %}
+  {% if session["user_id"] == person.user[0].id %}
+      <a href="{{ url_for('edit_projects', user_id=person.user[0].id) }}" class="btn btn-primary">{% if person.projects %} Edit {% else %} Add projects {% endif %}</a>
+  {% endif %}
+</div>
+
+      
+      <!-- Possessions Tab -->
+      <div class="tab-pane fade p-4 text-white bg-gradient" id="possessions" role="tabpanel" aria-labelledby="possessions-tab" style="background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px;">
+        {% if person.possessions %}
+        <h3 class="mt-2 text-info">{{ person.query }}'s Possessions</h3>
+      
+        <div class="table-responsive mt-4">
+          <table class="table table-bordered table-hover table-dark table-striped rounded shadow">
+            <thead class="thead-light">
+              <tr class="text-light">
+                <th>#</th>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for possession in person.possessions %}
+              <tr class="bg-opacity-75">
+                <td>{{ loop.index }}</td>
+                <td>{{ possession.item_name }}</td>
+                <td>{{ possession.category or "N/A" }}</td>
+                <td>${{ "{:,.2f}".format(possession.value) if possession.value else "Unknown" }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p class="text-warning">No possessions added yet.</p>
+        {% endif %}
+
+        {% if session["user_id"] == person.user[0].id %}
+            <a href="{{ url_for('edit_possessions', user_id=person.user[0].id) }}" class="btn btn-primary">{% if person.possessions %} Edit {% else %} Add Possessions {% endif %}</a>
+        {% endif %}
+      </div>
+
+      <!-- Jobs Tab -->
+      <div class="tab-pane fade p-4 text-white bg-gradient" id="jobs" role="tabpanel" aria-labelledby="jobs-tab" style="background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px;">
+        {% if person.jobs %}
+        <h3 class="mt-2 text-info">{{ person.query }}'s Jobs</h3>
+      
+        <div class="table-responsive mt-4">
+          <table class="table table-dark table-striped table-hover shadow rounded">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Company</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for job in person.jobs %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ job.title }}</td>
+                <td>{{ job.company or "N/A" }}</td>
+                <td>{{ job.start_date if job.start_date else "Ongoing" }}</td>
+                <td>{{ job.end_date if job.end_date else "Present" }}</td>
+                <td>{{ job.description or "No description available." }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p class="text-warning">No jobs added yet.</p>
+        {% endif %}
+      
+        {% if session["user_id"] == person.user[0].id %}
+            <a href="{{ url_for('edit_jobs', user_id=person.user[0].id) }}" class="btn btn-primary">{% if person.jobs %} Edit {% else %} Add Jobs {% endif %}</a>
+        {% endif %}
+      </div>
+      <!-- Net Worth Tab -->
+      <div class="tab-pane fade p-4 text-white bg-gradient" id="networth" role="tabpanel" aria-labelledby="networth-tab" style="background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px;">
+      {% if person.networth %}
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <div class="card text-center shadow-lg bg-dark text-white">
+                <div class="card-body">
+                  <h4 class="card-title text-info">Net Worth</h4>
+                  <h2 class="text-success fw-bold">
+                    ${{ person.networth[0].total_value | round(2) }}
+                  </h2>
+                  <p class="text-muted">Recorded on: {{ person.networth[0].date_recoreded }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <p class="text-warning">No net worth data available.</p>
+      {% endif %}
+
+      {% if session["user_id"] == person.user[0].id %}
+          <a href="{{ url_for('edit_networth', user_id=person.user[0].id) }}" class="btn btn-primary">{% if person.networth %} Edit {% else %} Add Net Worth {% endif %}</a>
+      {% endif %}
+      </div>
+      
+      
+
+     <!-- Book Recommendations Tab -->
+     <div class="tab-pane fade p-4 text-white bg-gradient" id="books-read" role="tabpanel" aria-labelledby="books-tab"
+     style="background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px;">
+     {% if person.book_recommendations %}
+  <div class="container">
+    <h2 class="text-center my-4">📚 Book Recommendations</h2>
+    <div class="row">
+        {% for book in person.book_recommendations %}
+        <div class="col-md-4">
+            <div class="card shadow-lg mb-4 bg-dark text-white">
+                <div class="card-body">
+                    <h5 class="card-title text-info fw-bold">{{ book.book_title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ book.author or "Unknown Author" }}</h6>
+                    <p class="card-text">{{ book.reason or "No reason provided." }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+  {% else %}
+      <p class="text-warning">No book recommendations available.</p>
+  {% endif %}
+
+  {% if session["user_id"] == person.user[0].id %}
+      <a href="{{ url_for('edit_book_recommendations', user_id=person.user[0].id) }}" class="btn btn-primary">{% if person.book_recommendations %} Edit {% else %} Add Book Recommendations {% endif %}</a>
+  {% endif %}
+</div>
+
+        <!-- Hobbies Tab -->
+        <div class="tab-pane fade p-4 text-white bg-gradient" id="hobbies" role="tabpanel" aria-labelledby="hobbies-tab"
+     style="background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 15px;">
+  {% if person.hobbies %}
+    <h3 class="mb-4 text-center">Hobbies</h3>
+    <ul class="list-group">
+        {% for hobby in person.hobbies %}
+        <li class="list-group-item bg-dark text-light">
+            <strong>{{ hobby.hobby }}</strong>
+        </li>
+        {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-warning text-center">No hobbies listed.</p>
+  {% endif %}
+  <br>
+  
+  {% if session["user_id"] == person.user[0].id %}
+      <a href="{{ url_for('edit_hobbies', user_id=person.user[0].id) }}" class="btn btn-primary">{% if person.hobbies %} Edit {% else %} Add Hobbies {% endif %}</a>
+  {% endif %}
+</div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

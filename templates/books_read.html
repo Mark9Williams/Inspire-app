@@ -1,0 +1,139 @@
+
+{% if person.books %}
+    <h3>Books Read</h3>
+    {% for book in person.books %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{book.title}}</h5>
+                    <p class="card-text">By {{book.author}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if person.projects %}
+    <h3 class="mt-4">Projects</h3>
+    <div class="row">
+        {% for project in person.projects %}
+        <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ project.title }}</h5>
+                    <p class="card-text">{{ project.description[:200] }}...</p>
+                    
+                    {% if project.github_link %}
+                    <p><a href="{{ project.github_link }}" target="_blank" class="btn btn-primary btn-sm">
+                        View on GitHub
+                    </a></p>
+                    {% endif %}
+
+                    <p class="text-muted">
+                        <small><strong>Start Date:</strong> {{ project.start_date if project.start_date else 'N/A' }}</small><br>
+                        <small><strong>End Date:</strong> {{ project.end_date if project.end_date else 'Ongoing' }}</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+{% if person.hobbies %}
+    <h3>Hobbies</h3>
+    <ul class="list-group">
+        {% for hobby in person.hobbies %}
+            <li class="list-group-item">
+                <strong>{{ hobby.hobby }}</strong>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<h3 class="mt-4">Possessions</h3>
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Item Name</th>
+            <th>Category</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for possession in person.possessions %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ possession.item_name }}</td>
+            <td>{{ possession.category or "N/A" }}</td>
+            <td>${{ "{:,.2f}".format(possession.value) if possession.value else "Unknown" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<h3 class="mt-4">Jobs</h3>
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Company</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in person.jobs %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ job.title }}</td>
+            <td>{{ job.company or "N/A" }}</td>
+            <td>{{ job.start_date if job.start_date else "Ongoing" }}</td>
+            <td>{{ job.end_date if job.end_date else "Present" }}</td>
+            <td>{{ job.description or "No description available." }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card text-center shadow-lg">
+                <div class="card-body">
+                    <h4 class="card-title">Net Worth</h4>
+                    <h2 class="text-success fw-bold">${{ person.networth[0].total_value | round(2) }}</h2>
+                    <p class="text-muted">Recorded on: {{ person.networth[0].date_recoreded }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="text-center my-4">📚 Book Recommendations</h2>
+    <div class="row">
+        {% for book in person.book_recommendations %}
+        <div class="col-md-4">
+            <div class="card shadow-lg mb-4">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">{{ book.book_title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ book.author or "Unknown Author" }}</h6>
+                    <p class="card-text">{{ book.reason or "No reason provided." }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% if not person %}
+    <p>No results found.</p>
+{% endif %}
