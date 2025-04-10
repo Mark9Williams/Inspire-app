@@ -1,6 +1,6 @@
 # Inspire
 
-### 📹 Video Demo  
+### 📹 Video Demo: https://youtu.be/T6JldDczqqM
 [Insert your video demo link here]
 
 ---
