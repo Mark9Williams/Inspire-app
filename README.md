@@ -1,4 +1,4 @@
-# Inspire
+# Project Title: Inspire
 
 ### 📹 Video Demo:
 [https://youtu.be/T6JldDczqqM]
